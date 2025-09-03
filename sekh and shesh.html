@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>لوحة مصروفات مطعم سيخ وشيش</title>
+    <style>
+        :root {
+            /* Dark (default) */
+            --bg: #0b0f19;
+            --bg-grad: linear-gradient(180deg, #070b13, #0b0f19 60%);
+            --card: #121829;
+            --muted: #1b2440;
+            --ink: #e7ecf3;
+            --ink-dim: #9fb0ca;
+            --accent: #4f8cff;
+            --accent-2: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            --radius: 16px;
+            --field: #0e1424;
+            --field-border: #1a2236;
+            --row-hover: #0e1424;
+            --topbar-bg: rgba(11, 15, 25, .7);
+            --topbar-border: #1b2233;
+            --card-border: #1b2233;
+            --kpi-grad: linear-gradient(180deg, #0f1629, #0b1222 140%);
+        }
+
+        /* Light Theme */
+        body.light {
+            --bg: #f5f7fb;
+            --bg-grad: linear-gradient(180deg, #ffffff, #eef2f8 60%);
+            --card: #ffffff;
+            --muted: #e8edf6;
+            --ink: #1e293b;
+            --ink-dim: #475569;
+            --accent: #2563eb;
+            --accent-2: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --shadow: 0 6px 18px rgba(0, 0, 0, .08);
+            --field: #ffffff;
+            --field-border: #d7deea;
+            --row-hover: #f3f6fb;
+            --topbar-bg: rgba(255, 255, 255, .75);
+            --topbar-border: #e5ecf6;
+            --card-border: #e5ecf6;
+            --kpi-grad: linear-gradient(180deg, #ffffff, #f6f9ff 140%);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: "Tajawal", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+            background: var(--bg-grad);
+            color: var(--ink);
+            transition: background .25s ease, color .25s ease;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--topbar-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--topbar-border);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0
+        }
+
+        .brand .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--accent), #7c3aed);
+            box-shadow: var(--shadow)
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: .4px
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr)
+        }
+
+        @media (max-width:1200px) {
+            .grid-3 {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media (max-width:800px) {
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .card {
+            background: linear-gradient(180deg, var(--card), #0f1629 120%);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow)
+        }
+
+        body.light .card {
+            background: var(--card);
+        }
+
+        .card .card-head {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .card .card-body {
+            padding: 16px 18px
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: var(--ink-dim);
+            margin: 2px 2px 8px
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            background: var(--field);
+            color: var(--ink);
+            border: 1px solid var(--field-border);
+            padding: 10px 12px;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(79, 140, 255, .15)
+        }
+
+        .muted {
+            color: var(--ink-dim);
+            font-size: 13px
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            appearance: none;
+            border: 0;
+            background: var(--accent);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .btn.secondary {
+            background: var(--field);
+            color: var(--ink);
+            border: 1px solid var(--field-border)
+        }
+
+        .btn.success {
+            background: var(--accent-2)
+        }
+
+        .btn.danger {
+            background: var(--danger)
+        }
+
+        .btn.warn {
+            background: var(--warning);
+            color: #111827
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px
+        }
+
+        @media (max-width:900px) {
+            .kpis {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media (max-width:580px) {
+            .kpis {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .kpi {
+            padding: 16px;
+            border-radius: 16px;
+            background: var(--kpi-grad);
+            border: 1px solid var(--card-border);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .kpi .val {
+            font-size: 20px;
+            font-weight: 800
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th,
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--field-border);
+            font-size: 14px
+        }
+
+        th {
+            color: #9fb0ca;
+            text-align: right;
+            font-weight: 700
+        }
+
+        body.light th {
+            color: #5b728a
+        }
+
+        tbody tr:hover {
+            background: var(--row-hover)
+        }
+
+        .pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            display: inline-block;
+            border: 1px solid #1f2a44
+        }
+
+        .pill.paid {
+            background: rgba(34, 197, 94, .1);
+            color: #0f5132;
+            border-color: rgba(34, 197, 94, .35)
+        }
+
+        body:not(.light) .pill.paid {
+            color: #a7f3d0
+        }
+
+        .pill.unpaid {
+            background: rgba(239, 68, 68, .08);
+            color: #7f1d1d;
+            border-color: rgba(239, 68, 68, .35)
+        }
+
+        body:not(.light) .pill.unpaid {
+            color: #fecaca
+        }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"></div>
+                <div>
+                    <h1>لوحة مصروفات مطعم <span style="color:var(--accent)">سيخ وشيش</span></h1>
+                    <div class="muted">إدارة المصروفات والمبيعات داخليًا (محفوظة محليًا على جهازك)</div>
+                </div>
+            </div>
+
+            <!-- زر تبديل المظهر -->
+            <button id="toggleTheme" class="btn secondary" style="margin-top:10px">تبديل المظهر (فاتح/غامق)</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <div class="card-head">
+                <div class="row"><strong>البحث والتصفية</strong></div>
+                <div class="row small muted">السنة الحالية: <span id="currentYear"></span></div>
+            </div>
+            <div class="card-body" style="display:flex; gap:10px; flex-wrap:wrap">
+                <div style="flex:1 1 240px">
+                    <label>بحث عام (اسم المصروف / الشركة / الصنف / الحالة)</label>
+                    <input id="q" type="text" placeholder="اكتب للبحث..." />
+                </div>
+                <div style="flex:1 1 160px"><label>الشهر</label><select id="filterMonth"></select></div>
+                <div style="flex:1 1 160px"><label>الشركة</label><select id="filterCompany"></select></div>
+                <div style="flex:1 1 160px"><label>الصنف</label><select id="filterCategory"></select></div>
+                <div style="flex:1 1 160px">
+                    <label>الحالة</label>
+                    <select id="filterStatus">
+                        <option value="">الكل</option>
+                        <option value="paid">تم الصرف</option>
+                        <option value="unpaid">لم يتم</option>
+                    </select>
+                </div>
+                <div style="flex:1 1 180px"><label>من تاريخ</label><input id="dateFrom" type="date"></div>
+                <div style="flex:1 1 180px"><label>إلى تاريخ</label><input id="dateTo" type="date"></div>
+                <div class="row" style="align-items:flex-end"><button class="btn secondary" id="clearFilters">مسح
+                        التصفية</button></div>
+            </div>
+        </section>
+
+        <section style="margin-top:16px">
+            <div class="kpis" id="kpis">
+                <div class="kpi">
+                    <div class="muted">إجمالي المصروفات (الكل)</div>
+                    <div class="val" id="kpiTotal">0</div>
+                </div>
+                <div class="kpi">
+                    <div class="muted">إجمالي تم الصرف</div>
+                    <div class="val" id="kpiPaid">0</div>
+                </div>
+                <div class="kpi">
+                    <div class="muted">إجمالي لم يتم</div>
+                    <div class="val" id="kpiUnpaid">0</div>
+                </div>
+                <div class="kpi">
+                    <div class="muted">إجمالي الشهر المحدد</div>
+                    <div class="val" id="kpiMonth">0</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-3" style="margin-top:16px">
+            <section class="card">
+                <div class="card-head"><strong>إضافة مصروف جديد</strong></div>
+                <div class="card-body grid grid-2">
+                    <div><label>التاريخ</label><input id="expDate" type="date"></div>
+                    <div><label>المبلغ</label><input id="expAmount" type="number" min="0" step="0.01"
+                            placeholder="0.00"></div>
+                    <div><label>الشركة (اختياري)</label><select id="expCompany"></select></div>
+                    <div>
+                        <label>اسم المصروف / الصنف</label>
+                        <input id="expItem" type="text" list="categoriesList" placeholder="مثال: خبز" />
+                        <datalist id="categoriesList"></datalist>
+                    </div>
+                    <div><label>الحالة</label><select id="expStatus">
+                            <option value="paid">تم الصرف</option>
+                            <option value="unpaid">لم يتم</option>
+                        </select></div>
+                    <div><label>عدد النسخ</label><input id="repeatCount" type="number" min="1" step="1" value="1" />
+                    </div>
+                    <div style="grid-column:1 / -1"><label>ملاحظات</label><input id="expNotes" type="text"
+                            placeholder="مثال: خبز من البقالة"></div>
+                    <div class="row" style="grid-column:1 / -1; justify-content:flex-start; gap:8px; margin-top:6px">
+                        <button class="btn success" id="addExpense">حفظ المصروف</button>
+                        <button class="btn secondary" id="resetExpenseForm">تفريغ الحقول</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-head"><strong>تسجيل وإدارة الشركات</strong></div>
+                <div class="card-body">
+                    <div class="grid grid-2">
+                        <div><label>اسم الشركة</label><input id="companyName" type="text" placeholder="أدخل اسم الشركة">
+                        </div>
+                        <div class="row" style="align-items:flex-end"><button class="btn" id="addCompany">إضافة
+                                شركة</button></div>
+                    </div>
+                    <div style="margin-top:12px">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الشركة</th>
+                                    <th>مصروفات هذا العام</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="companiesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-head"><strong>تسجيل وإدارة الأصناف</strong></div>
+                <div class="card-body">
+                    <div class="grid grid-2">
+                        <div><label>اسم الصنف</label><input id="categoryName" type="text"
+                                placeholder="مثال: خبز، خضار، لحوم..."></div>
+                        <div class="row" style="align-items:flex-end"><button class="btn" id="addCategory">إضافة
+                                صنف</button></div>
+                    </div>
+                    <div style="margin-top:12px">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الصنف</th>
+                                    <th>مصروفات هذا العام</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="card" style="margin-top:16px">
+            <div class="card-head">
+                <strong>سجل المصروفات</strong>
+                <div class="row">
+                    <button class="btn warn" id="exportCSV">تصدير CSV</button>
+                    <button class="btn" id="importFromFinanceData">استيراد من finance_data</button>
+                    <label class="btn secondary" for="importJSON" style="cursor:pointer">استيراد نسخة</label>
+                    <input id="importJSON" type="file" accept=".json" style="display:none">
+                    <button class="btn danger" id="wipeAll">مسح كل البيانات</button>
+                    <!-- ⬇⬇ أضِف هذا الزر الجديد هنا ⬇⬇ -->
+                    <button class="btn success" id="openRawImporter">استيراد نص خام / CSV</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الشهر</th>
+                            <th>الشركة</th>
+                            <th>الصنف / اسم المصروف</th>
+                            <th>المبلغ</th>
+                            <th>الحالة</th>
+                            <th>ملاحظات</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expensesTable"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card" style="margin-top:16px">
+            <div class="card-head"><strong>المبيعات الشهرية (من بداية السنة)</strong></div>
+            <div class="card-body">
+                <div class="grid grid-3" id="salesGrid"></div>
+                <div class="row" style="margin-top:12px"><button class="btn success" id="saveSales">حفظ
+                        المبيعات</button></div>
+            </div>
+        </section>
+
+        <section class="grid grid-2" style="margin-top:16px">
+            <div class="card">
+                <div class="card-head"><strong>المصروفات لكل شهر</strong></div>
+                <div class="card-body"><canvas id="chartMonthly"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><strong>المبيعات مقابل المصروفات</strong></div>
+                <div class="card-body"><canvas id="chartSalesVsExpenses"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><strong>أعلى الشركات صرفًا</strong></div>
+                <div class="card-body"><canvas id="chartTopCompanies"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><strong>أعلى الأصناف صرفًا</strong></div>
+                <div class="card-body"><canvas id="chartTopCategories"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><strong>حالة الصرف</strong></div>
+                <div class="card-body"><canvas id="chartStatus"></canvas></div>
+            </div>
+        </section>
+
+        <section class="row" style="margin-top:20px">
+            <button class="btn secondary" id="downloadBackup">حفظ نسخة احتياطية (JSON)</button>
+            <span class="muted small">كل البيانات محفوظة محليًا: لا تحتاج دومين ولا خادم.</span>
+        </section>
+
+        <!-- Modal: استيراد نص خام -->
+        <div id="rawImportModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:50;">
+            <div
+                style="max-width:900px; margin:40px auto; background:var(--card); color:var(--ink); border:1px solid var(--card-border); border-radius:16px; box-shadow:var(--shadow); overflow:hidden">
+                <div
+                    style="padding:14px 18px; border-bottom:1px solid var(--card-border); display:flex; justify-content:space-between; align-items:center">
+                    <strong>استيراد نص خام / CSV</strong>
+                    <button class="btn danger" id="closeRawImporter">إغلاق</button>
+                </div>
+                <div style="padding:16px 18px">
+                    <div class="muted" style="margin-bottom:8px">
+                        الصيغ المدعومة:
+                        <ul style="margin:6px 0 10px 18px">
+                            <li>RAW (6 أسطر لكل قيد: رقم/صنف/تصنيف/موقع/مبلغ/تاريخ مثل: <em>Aug 30, 2025</em>)</li>
+                            <li>CSV بسيط: <code>الصنف,التاريخ(YYYY-MM-DD),المبلغ</code></li>
+                        </ul>
+                    </div>
+                    <textarea id="rawInput" rows="14" placeholder="ألصق هنا…"
+                        style="width:100%; background:var(--field); color:var(--ink); border:1px solid var(--field-border); border-radius:12px; padding:10px 12px;"></textarea>
+
+                    <div class="row" style="margin-top:12px; gap:12px">
+                        <label class="row" style="gap:6px">
+                            <input id="onlyAugust" type="checkbox" checked />
+                            <span>أغسطس فقط</span>
+                        </label>
+                        <label class="row" style="gap:6px">
+                            <input id="wipeBeforeImport" type="checkbox" />
+                            <span>مسح الموجود قبل الاستيراد</span>
+                        </label>
+                        <label class="row" style="gap:6px">
+                            <input id="bindToDefaultCompany" type="checkbox" />
+                            <span>ربط بكلها لشركة “الافتراضي” (سيتم إنشاؤها إن لم توجد)</span>
+                        </label>
+                    </div>
+
+                    <div class="row" style="margin-top:12px; gap:10px">
+                        <button class="btn success" id="importRawNow">استيراد الآن</button>
+                        <button class="btn secondary" id="sampleCsvBtn">نسخ مثال CSV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Theme: restore & toggle
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') document.body.classList.add('light');
+            const themeBtn = document.getElementById('toggleTheme');
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    document.body.classList.toggle('light');
+                    localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+                });
+            }
+
+            const YEAR = new Date().getFullYear();
+            const MONTHS_AR = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+            const yearEl = document.getElementById('currentYear'); if (yearEl) yearEl.textContent = YEAR;
+
+            const K = {
+                companies: 'ss_companies',
+                categories: 'ss_categories',
+                expenses: 'ss_expenses',
+                sales: (y) => `ss_sales_${y}`
+            };
+            const byId = (id) => document.getElementById(id);
+            const on = (el, ev, fn) => { if (el && el.addEventListener) el.addEventListener(ev, fn); };
+            const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); } catch (e) { return fallback; } };
+            const write = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+            const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+            const fmt = (n) => new Intl.NumberFormat('ar-SA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(isNaN(n) ? 0 : +n);
+            const monthIndex = (d) => { const p = String(d || '').split('-'); return p.length >= 2 ? (parseInt(p[1], 10) - 1) : 0; };
+            const hasChart = () => typeof window.Chart !== 'undefined';
+            const sum = (arr) => arr.reduce((a, c) => a + (+c || 0), 0);
+
+            let companies = read(K.companies, []);
+            let categories = read(K.categories, []);
+            let expenses = read(K.expenses, []);
+            let sales = read(K.sales(YEAR), buildEmptySales());
+            function buildEmptySales() { const o = {}; for (let m = 1; m <= 12; m++) { o[String(m).padStart(2, '0')] = 0; } return o; }
+
+            const els = {
+                q: byId('q'), filterMonth: byId('filterMonth'), filterCompany: byId('filterCompany'), filterCategory: byId('filterCategory'), filterStatus: byId('filterStatus'), dateFrom: byId('dateFrom'), dateTo: byId('dateTo'), clearFilters: byId('clearFilters'),
+                kpiTotal: byId('kpiTotal'), kpiPaid: byId('kpiPaid'), kpiUnpaid: byId('kpiUnpaid'), kpiMonth: byId('kpiMonth'),
+                expDate: byId('expDate'), expAmount: byId('expAmount'), expCompany: byId('expCompany'), expItem: byId('expItem'), expStatus: byId('expStatus'), expNotes: byId('expNotes'), repeatCount: byId('repeatCount'),
+                companyName: byId('companyName'), addCompany: byId('addCompany'), companiesTable: byId('companiesTable'),
+                categoryName: byId('categoryName'), addCategory: byId('addCategory'), categoriesTable: byId('categoriesTable'), categoriesList: byId('categoriesList'),
+                expensesTable: byId('expensesTable'), salesGrid: byId('salesGrid'), saveSales: byId('saveSales'),
+                exportCSV: byId('exportCSV'), importJSON: byId('importJSON'), wipeAll: byId('wipeAll'), downloadBackup: byId('downloadBackup'), addExpense: byId('addExpense'), resetExpenseForm: byId('resetExpenseForm'),
+                importFromFinanceData: byId('importFromFinanceData') // ⬅️ زر الاستيراد الجديد
+            };
+
+            // مراجع عناصر نافذة الاستيراد (Raw / CSV)
+            els.openRawImporter = byId('openRawImporter');
+            els.rawImportModal = byId('rawImportModal');
+            els.closeRawImporter = byId('closeRawImporter');
+            els.rawInput = byId('rawInput');
+            els.onlyAugust = byId('onlyAugust');
+            els.wipeBeforeImport = byId('wipeBeforeImport');
+            els.bindToDefaultCompany = byId('bindToDefaultCompany');
+            els.importRawNow = byId('importRawNow');
+            els.sampleCsvBtn = byId('sampleCsvBtn');
+
+            function populateFilterMonth() { const s = els.filterMonth; if (!s) return; s.innerHTML = ''; s.add(new Option('الكل', '')); MONTHS_AR.forEach((n, i) => s.add(new Option(n, String(i + 1).padStart(2, '0')))); s.value = ''; }
+            function populateCompanies() {
+                if (els.filterCompany) { els.filterCompany.innerHTML = ''; els.filterCompany.add(new Option('الكل', '')); companies.forEach(c => els.filterCompany.add(new Option(c.name, c.id))); }
+                if (els.expCompany) { els.expCompany.innerHTML = ''; els.expCompany.add(new Option('بدون شركة', '')); companies.forEach(c => els.expCompany.add(new Option(c.name, c.id))); }
+            }
+            function populateCategories() {
+                if (els.filterCategory) { els.filterCategory.innerHTML = ''; els.filterCategory.add(new Option('الكل', '')); categories.forEach(c => els.filterCategory.add(new Option(c.name, c.id))); }
+                if (els.categoriesList) {
+                    els.categoriesList.innerHTML = categories
+                        .map(c => `<option value="${escapeHtml(c.name)}"></option>`).join('');
+                }
+            }
+
+            const totalForCompany = (id) => expenses.filter(e => e.companyId === id).reduce((a, c) => a + Number(c.amount || 0), 0);
+            function renderCompanies() {
+                const tb = els.companiesTable; if (!tb) return; tb.innerHTML = '';
+                if (companies.length === 0) { tb.innerHTML = '<tr><td colspan="3" class="muted">لا توجد شركات بعد</td></tr>'; return; }
+                for (const c of companies) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+          <td>${escapeHtml(c.name)}</td>
+          <td>${fmt(totalForCompany(c.id))}</td>
+          <td><button class="btn danger small" data-del="${c.id}">حذف</button></td>
+        `;
+                    tb.appendChild(tr);
+                }
+                tb.querySelectorAll('button[data-del]').forEach(b =>
+                    b.addEventListener('click', e => {
+                        const id = e.currentTarget.getAttribute('data-del');
+                        if (confirm('حذف الشركة سيحذف المصروفات المرتبطة بها أيضًا. هل أنت متأكد؟')) {
+                            expenses = expenses.filter(x => x.companyId !== id);
+                            companies = companies.filter(x => x.id !== id);
+                            write(K.expenses, expenses); write(K.companies, companies);
+                            populateCompanies(); renderCompanies(); renderAll();
+                        }
+                    })
+                );
+            }
+
+            const totalForCategory = (id) => expenses.filter(e => e.categoryId === id).reduce((a, c) => a + Number(c.amount || 0), 0);
+            function renderCategories() {
+                const tb = els.categoriesTable; if (!tb) return; tb.innerHTML = '';
+                if (categories.length === 0) { tb.innerHTML = '<tr><td colspan="3" class="muted">لا توجد أصناف بعد</td></tr>'; return; }
+                for (const c of categories) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+          <td>${escapeHtml(c.name)}</td>
+          <td>${fmt(totalForCategory(c.id))}</td>
+          <td><button class="btn danger small" data-del="${c.id}">حذف</button></td>
+        `;
+                    tb.appendChild(tr);
+                }
+                tb.querySelectorAll('button[data-del]').forEach(b =>
+                    b.addEventListener('click', e => {
+                        const id = e.currentTarget.getAttribute('data-del');
+                        if (confirm('حذف الصنف سيحذف المصروفات المرتبطة به أيضًا. هل أنت متأكد؟')) {
+                            expenses = expenses.filter(x => x.categoryId !== id);
+                            categories = categories.filter(x => x.id !== id);
+                            write(K.expenses, expenses); write(K.categories, categories);
+                            populateCategories(); renderCategories(); renderAll();
+                        }
+                    })
+                );
+            }
+
+            on(els.addCompany, 'click', () => {
+                const name = (els.companyName && els.companyName.value || '').trim();
+                if (!name) { alert('اكتب اسم الشركة'); return; }
+                if (companies.some(c => c.name === name)) { alert('هذه الشركة مسجلة بالفعل'); return; }
+                const c = { id: uid(), name };
+                companies.push(c); write(K.companies, companies);
+                els.companyName.value = ''; populateCompanies(); renderCompanies();
+                // فتح/غلق نافذة الاستيراد
+                on(els.openRawImporter, 'click', () => { if (els.rawImportModal) els.rawImportModal.style.display = 'block'; });
+                on(els.closeRawImporter, 'click', () => { if (els.rawImportModal) els.rawImportModal.style.display = 'none'; });
+
+                // نسخ مثال CSV
+                on(els.sampleCsvBtn, 'click', () => {
+                    const sample = `خبز,2025-08-30,73
+زبادي,2025-08-29,16
+غاز,2025-08-28,29`;
+                    navigator.clipboard.writeText(sample).then(() => alert('تم نسخ مثال CSV للحافظة.'));
+                });
+                on(els.importRawNow, 'click', () => {
+                    try {
+                        const txt = (els.rawInput && els.rawInput.value) || '';
+                        if (!txt.trim()) { alert('ألصق النص أولاً'); return; }
+
+                        const looksLikeCsv = txt.split(/\r?\n/).some(l => l.includes(','));
+                        let rows = looksLikeCsv ? parseSimpleCSV(txt) : parseRAWBlocks(txt);
+
+                        if (els.onlyAugust && els.onlyAugust.checked) {
+                            rows = rows.filter(r => r.month === 8);
+                        }
+                        if (!rows.length) { alert('لم يتم التعرف على سجلات. تأكد من التنسيق.'); return; }
+
+                        // القراءة من مخزن تطبيقك
+                        let companies = read(K.companies, []);
+                        let categories = read(K.categories, []);
+                        let expenses = read(K.expenses, []);
+
+                        if (els.wipeBeforeImport && els.wipeBeforeImport.checked) {
+                            expenses = [];
+                        }
+
+                        // ربط بشركة "الافتراضي" (اختياري)
+                        let defaultComp = null;
+                        if (els.bindToDefaultCompany && els.bindToDefaultCompany.checked) {
+                            defaultComp = companies.find(c => c.name === 'الافتراضي');
+                            if (!defaultComp) {
+                                defaultComp = { id: uid(), name: 'الافتراضي' };
+                                companies.push(defaultComp);
+                            }
+                        }
+
+                        const catByName = new Map(categories.map(c => [c.name, c]));
+                        let imported = 0;
+
+                        for (const r of rows) {
+                            const catName = (r.name || 'غير مصنف').trim();
+                            let cat = catByName.get(catName);
+                            if (!cat) {
+                                cat = { id: uid(), name: catName };
+                                categories.push(cat);
+                                catByName.set(catName, cat);
+                            }
+                            expenses.push({
+                                id: uid(),
+                                date: r.dateISO,
+                                amount: Number(r.amount || 0),
+                                companyId: defaultComp ? defaultComp.id : '',
+                                companyName: defaultComp ? defaultComp.name : '',
+                                categoryId: cat.id,
+                                categoryName: cat.name,
+                                status: 'paid',
+                                notes: ''
+                            });
+                            imported++;
+                        }
+
+                        write(K.companies, companies);
+                        write(K.categories, categories);
+                        write(K.expenses, expenses);
+
+                        console.log('✅ Imported:', imported, 'rows');
+                        if (els.rawImportModal) els.rawImportModal.style.display = 'none';
+                        if (typeof window.renderAll === 'function') renderAll(); else location.reload();
+                    } catch (e) {
+                        console.error(e);
+                        alert('حدث خطأ أثناء الاستيراد.');
+                    }
+                });
+
+            });
+
+            on(els.addCategory, 'click', () => {
+                const name = (els.categoryName && els.categoryName.value || '').trim();
+                if (!name) { alert('اكتب اسم الصنف'); return; }
+                if (categories.some(c => c.name === name)) { alert('هذا الصنف مسجل بالفعل'); return; }
+                const c = { id: uid(), name };
+                categories.push(c); write(K.categories, categories);
+                els.categoryName.value = ''; populateCategories(); renderCategories();
+            });
+
+            on(els.addExpense, 'click', () => {
+                const date = els.expDate && els.expDate.value;
+                const amount = parseFloat(els.expAmount && els.expAmount.value);
+                const companyId = els.expCompany ? (els.expCompany.value || null) : null;
+                const itemName = (els.expItem && els.expItem.value || '').trim();
+                const status = els.expStatus && els.expStatus.value;
+                const notes = (els.expNotes && els.expNotes.value || '').trim();
+                const copies = Math.max(1, parseInt(els.repeatCount && els.repeatCount.value, 10) || 1);
+
+                if (!date) { alert('اختر التاريخ'); return; }
+                if (!(amount >= 0)) { alert('أدخل المبلغ بشكل صحيح'); return; }
+                if (!itemName) { alert('اكتب اسم المصروف / الصنف'); return; }
+
+                let category = categories.find(c => c.name === itemName);
+                if (!category) {
+                    category = { id: uid(), name: itemName };
+                    categories.push(category);
+                    write(K.categories, categories);
+                    populateCategories(); renderCategories();
+                }
+                const company = companies.find(c => c.id === companyId);
+
+                for (let i = 0; i < copies; i++) {
+                    const row = {
+                        id: uid(), date, amount,
+                        companyId, companyName: company ? company.name : '',
+                        categoryId: category.id, categoryName: category.name,
+                        status, notes
+                    };
+                    expenses.push(row);
+                }
+                write(K.expenses, expenses);
+
+                if (els.expAmount) els.expAmount.value = '';
+                if (els.expItem) els.expItem.value = '';
+                if (els.expNotes) els.expNotes.value = '';
+                if (els.expCompany) els.expCompany.value = '';
+                if (els.repeatCount) els.repeatCount.value = '1';
+                renderAll();
+            });
+
+            on(els.resetExpenseForm, 'click', () => {
+                if (els.expDate) els.expDate.value = '';
+                if (els.expAmount) els.expAmount.value = '';
+                if (els.expItem) els.expItem.value = '';
+                if (els.expNotes) els.expNotes.value = '';
+                if (els.expCompany) els.expCompany.value = '';
+                if (els.repeatCount) els.repeatCount.value = '1';
+            });
+
+            function applyFilters(rows) {
+                const q = (els.q && els.q.value || '').trim().toLowerCase();
+                const m = els.filterMonth && els.filterMonth.value;
+                const comp = els.filterCompany && els.filterCompany.value;
+                const cat = els.filterCategory && els.filterCategory.value;
+                const st = els.filterStatus && els.filterStatus.value;
+                const from = els.dateFrom && els.dateFrom.value ? new Date(els.dateFrom.value) : null;
+                const to = els.dateTo && els.dateTo.value ? new Date(els.dateTo.value) : null;
+                let out = rows.slice();
+                if (q) {
+                    out = out.filter(r =>
+                        (r.companyName || '').toLowerCase().includes(q) ||
+                        (r.categoryName || '').toLowerCase().includes(q) ||
+                        (r.status || '').toLowerCase().includes(q) ||
+                        (r.notes || '').toLowerCase().includes(q)
+                    );
+                }
+                if (m) { out = out.filter(r => String(monthIndex(r.date) + 1).padStart(2, '0') === m); }
+                if (comp) { out = out.filter(r => r.companyId === comp); }
+                if (cat) { out = out.filter(r => r.categoryId === cat); }
+                if (st) { out = out.filter(r => r.status === st); }
+                if (from) { out = out.filter(r => new Date(r.date) >= from); }
+                if (to) { out = out.filter(r => new Date(r.date) <= to); }
+                return out.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+
+            function renderTable() {
+                const tb = els.expensesTable; if (!tb) return; const rows = applyFilters(expenses); tb.innerHTML = '';
+                if (rows.length === 0) { tb.innerHTML = '<tr><td colspan="8" class="muted">لا توجد نتائج</td></tr>'; return; }
+                for (const r of rows) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+          <td>${r.date || ''}</td>
+          <td>${MONTHS_AR[monthIndex(r.date)] || ''}</td>
+          <td>${escapeHtml(r.companyName || '')}</td>
+          <td>${escapeHtml(r.categoryName || '')}</td>
+          <td>${fmt(r.amount || 0)}</td>
+          <td>${r.status === 'paid' ? '<span class="pill paid">تم الصرف</span>' : '<span class="pill unpaid">لم يتم</span>'}</td>
+          <td>${escapeHtml(r.notes || '')}</td>
+          <td>
+            <button class="btn secondary small" data-act="toggle" data-id="${r.id}">${r.status === 'paid' ? 'تعليم كـ لم يتم' : 'تعليم كـ تم'}</button>
+            <button class="btn small" data-act="dup" data-id="${r.id}">نسخ</button>
+            <button class="btn danger small" data-act="del" data-id="${r.id}">حذف</button>
+          </td>
+        `;
+                    tb.appendChild(tr);
+                }
+                tb.querySelectorAll('button[data-act="del"]').forEach(btn => btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    if (confirm('هل تريد حذف هذا السجل؟')) {
+                        expenses = expenses.filter(x => x.id !== id);
+                        write(K.expenses, expenses);
+                        renderAll();
+                    }
+                }));
+                tb.querySelectorAll('button[data-act="toggle"]').forEach(btn => btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id'); const row = expenses.find(x => x.id === id);
+                    if (row) { row.status = row.status === 'paid' ? 'unpaid' : 'paid'; write(K.expenses, expenses); renderAll(); }
+                }));
+                tb.querySelectorAll('button[data-act="dup"]').forEach(btn => btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id'); const src = expenses.find(x => x.id === id); if (!src) return;
+                    const n = parseInt(prompt('كم نسخة تريد؟', '1'), 10) || 1;
+                    for (let i = 0; i < n; i++) { const copy = Object.assign({}, src, { id: uid() }); expenses.push(copy); }
+                    write(K.expenses, expenses); renderAll();
+                }));
+            }
+
+            function escapeHtml(s) {
+                return String(s)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+                    .replace(/\//g, '&#x2F;').replace(/`/g, '&#x60;').replace(/=/g, '&#x3D;');
+            }
+
+            function renderKPIs() {
+                const all = expenses; const fil = applyFilters(expenses);
+                const totalAll = sum(all.map(r => +r.amount || 0));
+                const totalPaid = sum(all.filter(r => r.status === 'paid').map(r => +r.amount || 0));
+                const totalUnpaid = sum(all.filter(r => r.status !== 'paid').map(r => +r.amount || 0));
+                const monthCode = els.filterMonth && els.filterMonth.value; let monthTotal = 0;
+                if (monthCode) { const idx = parseInt(monthCode, 10) - 1; monthTotal = sum(all.filter(r => monthIndex(r.date) === idx).map(r => +r.amount || 0)); }
+                else { monthTotal = sum(fil.map(r => +r.amount || 0)); }
+                els.kpiTotal.textContent = fmt(totalAll); els.kpiPaid.textContent = fmt(totalPaid); els.kpiUnpaid.textContent = fmt(totalUnpaid); els.kpiMonth.textContent = fmt(monthTotal);
+            }
+
+            function renderSales() {
+                const g = els.salesGrid; if (!g) return; g.innerHTML = '';
+                Object.keys(sales).forEach(code => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+          <label>${MONTHS_AR[parseInt(code, 10) - 1]}</label>
+          <input type="number" min="0" step="0.01" data-month="${code}" value="${sales[code] || 0}">
+        `;
+                    g.appendChild(div);
+                });
+            }
+            on(els.saveSales, 'click', () => {
+                const inputs = els.salesGrid ? els.salesGrid.querySelectorAll('input[data-month]') : [];
+                inputs.forEach(inp => { const m = inp.getAttribute('data-month'); sales[m] = parseFloat(inp.value) || 0; });
+                write(K.sales(YEAR), sales); updateCharts(); alert('تم حفظ المبيعات.');
+            });
+
+            [els.q, els.filterMonth, els.filterCompany, els.filterCategory, els.filterStatus, els.dateFrom, els.dateTo]
+                .filter(Boolean).forEach(el => el.addEventListener('input', () => { renderTable(); renderKPIs(); updateCharts(); }));
+
+            on(els.clearFilters, 'click', () => {
+                if (els.q) els.q.value = '';
+                if (els.filterMonth) els.filterMonth.value = '';
+                if (els.filterCompany) els.filterCompany.value = '';
+                if (els.filterCategory) els.filterCategory.value = '';
+                if (els.filterStatus) els.filterStatus.value = '';
+                if (els.dateFrom) els.dateFrom.value = '';
+                if (els.dateTo) els.dateTo.value = '';
+                renderAll();
+            });
+
+            on(els.exportCSV, 'click', () => {
+                const rows = expenses.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+                const header = ['date', 'month', 'company', 'category', 'amount', 'status', 'notes'];
+                const lines = [header.join(',')];
+                rows.forEach(r => {
+                    const monthName = MONTHS_AR[monthIndex(r.date)];
+                    const row = [
+                        r.date,
+                        monthName,
+                        (r.companyName || ''),
+                        (r.categoryName || ''),
+                        (r.amount || 0),
+                        r.status === 'paid' ? 'تم' : 'لم يتم',
+                        (r.notes || '')
+                    ].map(x => `"${String(x).replace(/"/g, '""')}"`);
+                    lines.push(row.join(','));
+                });
+                const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `sekh-shish-expenses-${YEAR}.csv`;
+                a.click();
+            });
+
+            on(els.downloadBackup, 'click', () => {
+                const dump = { companies, categories, expenses, sales, year: YEAR };
+                const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `sekh-shish-backup-${YEAR}.json`;
+                a.click();
+            });
+
+            on(els.importJSON, 'change', (e) => {
+                const file = e.target.files[0]; if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const data = JSON.parse(reader.result);
+                        if (data.companies && data.expenses && data.sales) {
+                            companies = data.companies; expenses = data.expenses; sales = data.sales; categories = data.categories || categories;
+                            write(K.companies, companies); write(K.expenses, expenses); write(K.categories, categories); write(K.sales(YEAR), sales);
+                            populateCompanies(); populateCategories(); renderCompanies(); renderCategories(); renderAll();
+                            alert('تم الاستيراد بنجاح');
+                        } else { alert('الملف غير صالح'); }
+                    } catch (err) { alert('تعذر قراءة الملف'); }
+                    e.target.value = '';
+                };
+                reader.readAsText(file);
+            });
+
+            // ======== استيراد من finance_data (localStorage) إلى نموذج سيخ وشيش ========
+            function importFromFinanceData() {
+                const raw = localStorage.getItem('finance_data');
+                if (!raw) { alert('لا يوجد مفتاح finance_data في localStorage'); return; }
+
+                let obj;
+                try { obj = JSON.parse(raw); }
+                catch (e) { alert('finance_data ليس JSON صالح'); return; }
+
+                if (!obj.exps) { alert('الحقل exps غير موجود داخل finance_data'); return; }
+
+                let expsArr;
+                try { expsArr = JSON.parse(obj.exps); }
+                catch (e) { alert('exps ليست سلسلة JSON صالحة داخل finance_data'); return; }
+
+                if (!Array.isArray(expsArr) || expsArr.length === 0) {
+                    alert('لا توجد مصروفات داخل exps'); return;
+                }
+
+                const wipe = confirm('هل تريد مسح المصروفات الحالية قبل الاستيراد؟ اضغط موافق للمسح، إلغاء للإضافة فوق الموجود.');
+                if (wipe) {
+                    expenses = [];
+                    write(K.expenses, expenses);
+                }
+
+                const catByName = new Map(categories.map(c => [c.name, c]));
+                const compByName = new Map(companies.map(c => [c.name, c]));
+
+                let importedCount = 0;
+
+                for (const e of expsArr) {
+                    const catName = (e.cat || e.name || '').toString().trim() || 'غير مصنف';
+                    let cat = catByName.get(catName);
+                    if (!cat) {
+                        cat = { id: uid(), name: catName };
+                        categories.push(cat);
+                        catByName.set(catName, cat);
+                    }
+
+                    const companyName = (e.company || '').toString().trim();
+                    let comp = null;
+                    if (companyName) {
+                        comp = compByName.get(companyName);
+                        if (!comp) {
+                            comp = { id: uid(), name: companyName };
+                            companies.push(comp);
+                            compByName.set(companyName, comp);
+                        }
+                    }
+
+                    const status = e.paid ? 'paid' : 'unpaid';
+                    const notes = (e.note || e.notes || '').toString();
+
+                    const row = {
+                        id: uid(),
+                        date: e.date || '',
+                        amount: Number(e.amount || 0),
+                        companyId: comp ? comp.id : '',
+                        companyName: comp ? comp.name : '',
+                        categoryId: cat.id,
+                        categoryName: cat.name,
+                        status,
+                        notes
+                    };
+
+                    expenses.push(row);
+                    importedCount++;
+                }
+
+                write(K.companies, companies);
+                write(K.categories, categories);
+                write(K.expenses, expenses);
+
+                populateCompanies();
+                populateCategories();
+                renderCompanies();
+                renderCategories();
+                renderAll();
+
+                alert(`تم الاستيراد من finance_data.\nعدد السجلات المضافة: ${importedCount}`);
+            }
+
+            if (els.importFromFinanceData) {
+                els.importFromFinanceData.addEventListener('click', importFromFinanceData);
+            }
+
+            // مسح كل البيانات
+            on(els.wipeAll, 'click', () => {
+                if (confirm('سيتم حذف جميع البيانات (شركات، أصناف، مصروفات، مبيعات). هل أنت متأكد؟')) {
+                    localStorage.removeItem(K.companies);
+                    localStorage.removeItem(K.categories);
+                    localStorage.removeItem(K.expenses);
+                    localStorage.removeItem(K.sales(YEAR));
+                    companies = []; categories = []; expenses = []; sales = buildEmptySales();
+                    populateCompanies(); populateCategories(); renderCompanies(); renderCategories(); renderAll();
+                    alert('تم مسح كل البيانات.');
+                }
+            });
+
+            let chartMonthly, chartSalesVs, chartTopCompanies, chartTopCategories, chartStatus;
+            function updateCharts() {
+                if (!hasChart()) return;
+                const monthlyTotals = Array.from({ length: 12 }, (_, i) => sum(expenses.filter(r => monthIndex(r.date) === i).map(r => +r.amount || 0)));
+                const salesVals = Object.keys(sales).sort().map(m => sales[m] || 0);
+
+                const c1 = byId('chartMonthly');
+                if (c1) {
+                    const ctx = c1.getContext('2d'); if (chartMonthly) chartMonthly.destroy();
+                    chartMonthly = new Chart(ctx, { type: 'bar', data: { labels: MONTHS_AR, datasets: [{ label: 'مصروفات', data: monthlyTotals }] }, options: { responsive: true, plugins: { legend: { display: true } } } });
+                }
+
+                const c2 = byId('chartSalesVsExpenses');
+                if (c2) {
+                    const ctx = c2.getContext('2d'); if (chartSalesVs) chartSalesVs.destroy();
+                    chartSalesVs = new Chart(ctx, { type: 'line', data: { labels: MONTHS_AR, datasets: [{ label: 'المبيعات', data: salesVals }, { label: 'المصروفات', data: monthlyTotals }] }, options: { responsive: true, plugins: { legend: { display: true } } } });
+                }
+
+                const byComp = companies.map(c => ({ name: c.name, total: sum(expenses.filter(r => r.companyId === c.id).map(r => +r.amount || 0)) })).sort((a, b) => b.total - a.total).slice(0, 6);
+                const c3 = byId('chartTopCompanies');
+                if (c3) {
+                    const ctx = c3.getContext('2d'); if (chartTopCompanies) chartTopCompanies.destroy();
+                    chartTopCompanies = new Chart(ctx, { type: 'bar', data: { labels: byComp.map(x => x.name), datasets: [{ label: 'إجمالي الصرف', data: byComp.map(x => x.total) }] }, options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } } });
+                }
+
+                const byCat = categories.map(c => ({ name: c.name, total: sum(expenses.filter(r => r.categoryId === c.id).map(r => +r.amount || 0)) })).sort((a, b) => b.total - a.total).slice(0, 6);
+                const c3b = byId('chartTopCategories');
+                if (c3b) {
+                    const ctx = c3b.getContext('2d'); if (chartTopCategories) chartTopCategories.destroy();
+                    chartTopCategories = new Chart(ctx, { type: 'bar', data: { labels: byCat.map(x => x.name), datasets: [{ label: 'إجمالي الصرف', data: byCat.map(x => x.total) }] }, options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } } });
+                }
+
+                const paid = expenses.filter(r => r.status === 'paid').length; const unpaid = expenses.filter(r => r.status !== 'paid').length;
+                const c4 = byId('chartStatus');
+                if (c4) {
+                    const ctx = c4.getContext('2d'); if (chartStatus) chartStatus.destroy();
+                    chartStatus = new Chart(ctx, { type: 'doughnut', data: { labels: ['تم الصرف', 'لم يتم'], datasets: [{ data: [paid, unpaid] }] }, options: { responsive: true, plugins: { legend: { display: true } } } });
+                }
+            }
+
+            function renderAll() {
+                populateFilterMonth(); populateCompanies(); populateCategories();
+                renderCompanies(); renderCategories(); renderSales(); renderTable(); renderKPIs(); updateCharts();
+            }
+
+            const jan1 = new Date(YEAR, 0, 1); const today = new Date();
+            if (els.dateFrom) els.dateFrom.value = jan1.toISOString().slice(0, 10);
+            if (els.dateTo) els.dateTo.value = today.toISOString().slice(0, 10);
+
+            if (companies.length === 0) {
+                companies = [{ id: uid(), name: 'مورد الخضار' }, { id: uid(), name: 'مورد اللحوم' }];
+                write(K.companies, companies);
+            }
+            if (categories.length === 0) {
+                categories = [{ id: uid(), name: 'خبز' }, { id: uid(), name: 'خضار' }, { id: uid(), name: 'لحوم' }];
+                write(K.categories, categories);
+            }
+
+            (function selfTest() {
+                const required = ['q', 'filterMonth', 'filterCompany', 'filterCategory', 'filterStatus', 'dateFrom', 'dateTo', 'kpiTotal', 'kpiPaid', 'kpiUnpaid', 'kpiMonth', 'expDate', 'expAmount', 'expCompany', 'expItem', 'expStatus', 'repeatCount', 'addExpense', 'resetExpenseForm', 'companyName', 'addCompany', 'companiesTable', 'categoryName', 'addCategory', 'categoriesTable', 'expensesTable', 'salesGrid', 'saveSales', 'exportCSV', 'importJSON', 'wipeAll', 'downloadBackup', 'importFromFinanceData'];
+                const missing = required.filter(id => !byId(id));
+                if (missing.length) { console.warn('[SelfTest] عناصر مفقودة:', missing); } else { console.log('[SelfTest] UI elements OK'); }
+            })();
+
+            renderAll();
+        });
+    </script>
+</body>
+
+</html>
